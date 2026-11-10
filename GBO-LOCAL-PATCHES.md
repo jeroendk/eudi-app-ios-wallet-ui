@@ -18,15 +18,17 @@ App changes (in this clone):
   (keychain and app group only); the ID Provider extension is no longer built or
   embedded (it needs Apple's identity document services entitlement).
 
-Dependency changes (in the SwiftPM checkout, re-apply after a package reset):
-- eudi-lib-ios-openid4vci-swift v0.55.2, `Sources/Main/Authorisers/AuthorizationServerClient.swift`,
-  pre-authorized token request: `authServerId: tokenEndpoint` ->
-  `URL(string: authorizationServerMetadata.issuer ?? "") ?? tokenEndpoint`.
-  draft-ietf-oauth-attestation-based-client-auth -07/-08: the PoP `aud` MUST be
-  the authorization server's issuer identifier.
-- eudi-lib-ios-wallet-kit 0.54.5, `Sources/EudiWalletKit/Services/OpenId4VciService.swift`,
-  `submissionUseCase`: send `.identifierBased` with the credential identifier
-  from the token response when there is one. OpenID4VCI 1.0 section 8.2.
+Dependency changes are versioned in public forks (Apache 2.0):
+- https://github.com/jeroendk/eudi-lib-ios-openid4vci-swift, exact tag `0.55.2-gbo.1`:
+  preserve the authorization server issuer identifier as the client-attestation PoP audience.
+- https://github.com/jeroendk/eudi-lib-ios-wallet-kit, exact tag `0.54.5-gbo.1`:
+  preserve `credential_identifier` in credential requests and pin the OpenID4VCI fork.
+
+The app pins WalletKit in `Modules/logic-core/Package.swift`; WalletKit pins
+OpenID4VCI in its own `Package.swift`. `Package.resolved` records both revisions.
+No edits to SwiftPM checkouts or post-resolve patch scripts are required.
+Publish the dependency commits and tags before resolving on another machine.
+Until push approval, these commits and tags exist locally only.
 
 Build for the iPhone: the same command with `-destination 'id=<device udid>' -allowProvisioningUpdates`
 and without the signing overrides.
