@@ -1,3 +1,22 @@
+# GBO Wallet
+
+## GBO simulation build
+
+GBO Wallet is a modified version of the European Commission’s
+[EUDI iOS Wallet reference application](https://github.com/eu-digital-identity-wallet/eudi-app-ios-wallet-ui),
+maintained by Jeroen de Kok for the GBO simulation environment. It is not an
+official EU wallet and does not claim EU wallet certification.
+
+The application remains licensed under EUPL 1.2. Upstream copyright, license
+and attribution notices are retained. See [GBO-LOCAL-PATCHES.md](GBO-LOCAL-PATCHES.md)
+for the existing integration patches, pinned dependency forks, branding choices
+and build instructions. PDF signing is retained.
+
+`main` follows upstream. GBO changes are maintained on `gbo/main` in
+[this fork](https://github.com/jeroendk/eudi-app-ios-wallet-ui/tree/gbo/main).
+
+---
+
 # EUDI iOS Wallet reference application
 
 [![License: EUPL 1.2](https://img.shields.io/badge/License-EUPL%201.2-blue.svg)](https://joinup.ec.europa.eu/software/page/eupl)

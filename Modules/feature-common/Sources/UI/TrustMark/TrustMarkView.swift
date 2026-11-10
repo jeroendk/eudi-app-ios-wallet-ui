@@ -9,10 +9,11 @@
  * https://joinup.ec.europa.eu/software/page/eupl
  *
  * Unless required by applicable law or agreed to in writing, software distributed under
- * the Licence is distributed on an "AS IS" basis, WITHOUT WARRANTIES OR CONDITIONS OF
+ * the Licence is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the Licence for the specific language
  * governing permissions and limitations under the Licence.
  */
+// Modified by Jeroen de Kok for GBO Wallet, 2026-11-10.
 import SwiftUI
 import logic_ui
 import logic_resources
@@ -33,11 +34,50 @@ struct TrustMarkView<Router: RouterHost>: View {
       toolbarContent: viewModel.toolbarContent()
     ) {
       ScrollView {
-        TrustMarkViewContainer(
-          viewState: viewModel.viewState,
-          onRetry: viewModel.onRetry,
-          onOpenLink: viewModel.onOpenLink
-        )
+        VStack(alignment: .leading, spacing: SPACING_LARGE_MEDIUM) {
+          Theme.shared.image.logo
+            .resizable()
+            .scaledToFit()
+            .frame(width: 160, height: 80)
+            .accessibilityLabel(Text(.trustMarkImageDescription))
+
+          if viewModel.viewState.config.isWelcome {
+            Text(.trustMarkWelcomeTitle)
+              .typography(Theme.shared.font.titleLarge)
+          }
+
+          Text(.trustMarkWalletName)
+            .typography(Theme.shared.font.displayLarge)
+
+          Text(.trustMarkCertificationDescription([
+            LocalizableStringKey.trustMarkCertifiedWalletsLink.toString
+          ]))
+          .typography(Theme.shared.font.bodyLarge)
+
+          if let upstream = URL(string: "https://github.com/eu-digital-identity-wallet/eudi-app-ios-wallet-ui") {
+            Link(destination: upstream) {
+              Text(.trustMarkCertifiedWalletsLink)
+                .underline()
+                .foregroundStyle(Theme.shared.color.accent)
+            }
+          }
+
+          Text(.trustMarkCertificationInformationDescription([
+            LocalizableStringKey.trustMarkCertificationInformationLink.toString
+          ]))
+          .typography(Theme.shared.font.bodyLarge)
+
+          if let source = URL(string: "https://github.com/jeroendk/eudi-app-ios-wallet-ui/tree/gbo/main") {
+            Link(destination: source) {
+              Text(.trustMarkCertificationInformationLink)
+                .underline()
+                .foregroundStyle(Theme.shared.color.accent)
+            }
+          }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .foregroundStyle(Theme.shared.color.primaryLabel)
+        .tint(Theme.shared.color.accent)
         .padding(Theme.shared.dimension.padding)
       }
       .safeAreaInset(edge: .bottom, spacing: .zero) {
@@ -52,193 +92,6 @@ struct TrustMarkView<Router: RouterHost>: View {
           .padding(.top, SPACING_MEDIUM)
           .padding(.bottom, SPACING_LARGE_MEDIUM)
           .background(Theme.shared.color.background)
-        }
-      }
-    }
-    .onError(
-      show: $viewModel.isBrowserErrorShowing,
-      message: LocalizableStringKey.trustMarkBrowserError.toString
-    )
-    .task {
-      await viewModel.initialize()
-    }
-  }
-}
-
-private enum TrustMarkImageState {
-  case loading
-  case loaded
-  case failed
-}
-
-private struct TrustMarkViewContainer: View {
-
-  let viewState: TrustMarkState
-  let onRetry: () -> Void
-  let onOpenLink: (URL) -> Void
-
-  @State private var imageState: TrustMarkImageState = .loading
-  @State private var imageAttempt = UUID()
-  @State private var imageAspectRatio: CGFloat?
-
-  private let placeholderAspectRatio: CGFloat = 3
-
-  var body: some View {
-    VStack(alignment: .leading, spacing: SPACING_LARGE_MEDIUM) {
-      heading()
-
-      if viewState.isLoading {
-        loadingSection()
-      } else if let loadError = viewState.loadError {
-        statusSection(message: loadError, onRetry: onRetry)
-      } else if let trustMark = viewState.trustMark {
-        badge(trustMark)
-        linkedParagraph(trustMark.certificationDescription, url: trustMark.certifiedWalletsUrl)
-        linkedParagraph(trustMark.certificationInformationDescription, url: trustMark.walletSolutionUrl)
-      }
-    }
-    .frame(maxWidth: .infinity, alignment: .leading)
-    .environment(\.openURL, OpenURLAction { url in
-      onOpenLink(url)
-      return .handled
-    })
-  }
-
-  @ViewBuilder
-  private func heading() -> some View {
-    VStack(alignment: .leading, spacing: .zero) {
-      if viewState.config.isWelcome {
-        ContentHeaderView(
-          config: ContentHeaderConfig(
-            appIconAndTextData: AppIconAndTextData(
-              appIcon: Theme.shared.image.logoEuDigitalIndentityWallet
-            )
-          )
-        )
-      }
-      VStack(alignment: .leading, spacing: SPACING_SMALL) {
-        if viewState.config.isWelcome {
-          Text(.trustMarkWelcomeTitle)
-            .typography(Theme.shared.font.titleLarge)
-            .fontWeight(.regular)
-            .foregroundColor(Theme.shared.color.primaryLabel)
-        }
-        Text(.trustMarkWalletName)
-          .typography(Theme.shared.font.displayLarge)
-          .fontWeight(.regular)
-          .foregroundColor(Theme.shared.color.primaryLabel)
-      }
-      .padding(.top, ContentTitleView.TopSpacing.withoutToolbar.rawValue)
-    }
-  }
-
-  @ViewBuilder
-  private func badge(_ trustMark: TrustMarkUIModel) -> some View {
-    VStack(alignment: .leading, spacing: SPACING_SMALL) {
-      VStack(alignment: .center, spacing: SPACING_MEDIUM) {
-        image(url: trustMark.imageUrl)
-        if let text = trustMark.text {
-          Text(.custom(text))
-            .typography(Theme.shared.font.bodyLarge)
-            .fontWeight(.regular)
-            .foregroundColor(Theme.shared.color.primaryLabel)
-            .frame(maxWidth: .infinity, alignment: .leading)
-        }
-      }
-      if trustMark.imageUrl == nil || imageState == .failed {
-        statusSection(
-          message: LocalizableStringKey.trustMarkImageError.toString,
-          onRetry: trustMark.imageUrl == nil ? nil : {
-            imageState = .loading
-            imageAttempt = UUID()
-          }
-        )
-      }
-    }
-  }
-
-  @ViewBuilder
-  private func image(url: URL?) -> some View {
-    if let url, imageState != .failed {
-      RemoteImageView(
-        url: url,
-        icon: nil,
-        width: nil,
-        height: nil,
-        retryFailed: true,
-        onSuccess: { size in
-          if size.width > 0, size.height > 0 {
-            imageAspectRatio = size.width / size.height
-          }
-          imageState = .loaded
-        },
-        onFailure: { imageState = .failed }
-      )
-      .id(imageAttempt)
-      .aspectRatio(imageAspectRatio ?? placeholderAspectRatio, contentMode: .fit)
-      .frame(maxWidth: .infinity)
-      .accessibilityLabel(Text(.trustMarkImageDescription))
-    } else {
-      Theme.shared.image.infoCircle
-        .foregroundColor(Theme.shared.color.primaryLabel)
-        .frame(maxWidth: .infinity)
-    }
-  }
-
-  @ViewBuilder
-  private func linkedParagraph(_ paragraph: TrustMarkParagraphUIModel, url: URL?) -> some View {
-    paragraphText(paragraph, url: url)
-      .typography(Theme.shared.font.bodyLarge)
-      .foregroundColor(Theme.shared.color.primaryLabel)
-      .frame(maxWidth: .infinity, alignment: .leading)
-  }
-
-  private func paragraphText(_ paragraph: TrustMarkParagraphUIModel, url: URL?) -> Text {
-    let text = paragraph.text
-    guard let range = paragraph.linkRange,
-          let lower = text.index(text.startIndex, offsetBy: range.lowerBound, limitedBy: text.endIndex),
-          let upper = text.index(text.startIndex, offsetBy: range.upperBound, limitedBy: text.endIndex)
-    else {
-      return Text(.custom(text))
-    }
-
-    let linkColor = url == nil ? Theme.shared.color.secondaryLabel : Theme.shared.color.accent
-    var link = AttributedString(String(text[lower..<upper]))
-    link.foregroundColor = linkColor
-    if let url {
-      link.link = url
-      link.underlineStyle = Text.LineStyle.single
-    }
-
-    return Text(.custom(String(text[..<lower])))
-    + Text(link)
-    + Text(.custom("\u{00A0}"))
-    + Text(Theme.shared.image.arrowUpRightSquare).foregroundColor(linkColor)
-    + Text(.custom(String(text[upper...])))
-  }
-
-  @ViewBuilder
-  private func loadingSection() -> some View {
-    VStack(alignment: .leading, spacing: SPACING_SMALL) {
-      ContentLoaderView(showLoader: .constant(true))
-        .frame(maxWidth: .infinity)
-      Text(.trustMarkLoading)
-        .typography(Theme.shared.font.bodyLarge)
-        .foregroundColor(Theme.shared.color.primaryLabel)
-    }
-  }
-
-  @ViewBuilder
-  private func statusSection(message: String, onRetry: (() -> Void)?) -> some View {
-    VStack(alignment: .leading, spacing: SPACING_SMALL) {
-      Text(.custom(message))
-        .typography(Theme.shared.font.bodyLarge)
-        .foregroundColor(Theme.shared.color.primaryLabel)
-      if let onRetry {
-        Button(action: onRetry) {
-          Text(.tryAgain)
-            .typography(Theme.shared.font.labelLarge)
-            .foregroundColor(Theme.shared.color.accent)
         }
       }
     }

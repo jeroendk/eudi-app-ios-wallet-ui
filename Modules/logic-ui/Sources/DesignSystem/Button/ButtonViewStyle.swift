@@ -31,7 +31,7 @@ public enum ButtonViewStyle {
   var textColor: Color {
     switch self {
     case .primary:
-      Theme.shared.color.white
+      Color("buttonForeground", bundle: .assetsBundle)
     case .secondary:
       Theme.shared.color.accent
     case .error:

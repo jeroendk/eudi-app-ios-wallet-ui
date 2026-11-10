@@ -1,3 +1,3 @@
 BUILD_TYPE = DEBUG
 BUILD_VARIANT = DEMO
-CHANGELOG_URL =  https:/$()/github.com/eu-digital-identity-wallet/eudi-app-ios-wallet-ui/releases
+CHANGELOG_URL =  https:/$()/github.com/jeroendk/eudi-app-ios-wallet-ui/commits/gbo/main

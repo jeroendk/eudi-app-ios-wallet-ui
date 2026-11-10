@@ -33,6 +33,13 @@
 	<string>$(CORE_USER_AUTH)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIColorName</key>
+		<string>GboLaunchBackground</string>
+		<key>UIImageName</key>
+		<string>GboLaunchLogo</string>
+	</dict>
 	<key>Team ID</key>
 	<string>$(APP_TEAM_ID)</string>
 </dict>
