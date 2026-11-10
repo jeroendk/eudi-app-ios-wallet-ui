@@ -232,6 +232,70 @@ struct WalletKitConfigImpl: WalletKitConfig {
               cacheIssuerMetadata: false
             ),
             order: 0
+          ),
+          // GBO demo: the own credential issuer, wallet-initiated issuance (#614 phase 3).
+          .init(
+            config: .init(
+              credentialIssuerURL: "https://eudi-credential-issuer.studiocodex.nl/rvig/eudi",
+              clientId: "eudiw-abca",
+              keyAttestationsConfig: .init(
+                walletAttestationsProvider: walletKitAttestationProvider,
+                popKeyOptions: KeyOptions(
+                  secureAreaName: SecureEnclaveSecureArea.name,
+                  accessControl: .empty
+                )
+              ),
+              authFlowRedirectionURI: URL(string: "eu.europa.ec.euidi://authorization")!,
+              parUsage: .required(authorizationCodeDPoPBinding: true),
+              allowPlainJwtProof: false,
+              requireDpop: true,
+              issuerMetadataPolicy: trustConfiguration.issuerMetadataPolicy,
+              validateRegistrationCertificate: validateIssuerRegistrationCertificate,
+              cacheIssuerMetadata: false
+            ),
+            order: 2
+          ),
+          .init(
+            config: .init(
+              credentialIssuerURL: "https://eudi-credential-issuer.studiocodex.nl/belastingdienst/eudi",
+              clientId: "eudiw-abca",
+              keyAttestationsConfig: .init(
+                walletAttestationsProvider: walletKitAttestationProvider,
+                popKeyOptions: KeyOptions(
+                  secureAreaName: SecureEnclaveSecureArea.name,
+                  accessControl: .empty
+                )
+              ),
+              authFlowRedirectionURI: URL(string: "eu.europa.ec.euidi://authorization")!,
+              parUsage: .required(authorizationCodeDPoPBinding: true),
+              allowPlainJwtProof: false,
+              requireDpop: true,
+              issuerMetadataPolicy: trustConfiguration.issuerMetadataPolicy,
+              validateRegistrationCertificate: validateIssuerRegistrationCertificate,
+              cacheIssuerMetadata: false
+            ),
+            order: 3
+          ),
+          .init(
+            config: .init(
+              credentialIssuerURL: "https://eudi-credential-issuer.studiocodex.nl/demo-unsecured/eudi",
+              clientId: "eudiw-abca",
+              keyAttestationsConfig: .init(
+                walletAttestationsProvider: walletKitAttestationProvider,
+                popKeyOptions: KeyOptions(
+                  secureAreaName: SecureEnclaveSecureArea.name,
+                  accessControl: .empty
+                )
+              ),
+              authFlowRedirectionURI: URL(string: "eu.europa.ec.euidi://authorization")!,
+              parUsage: .required(authorizationCodeDPoPBinding: true),
+              allowPlainJwtProof: false,
+              requireDpop: true,
+              issuerMetadataPolicy: trustConfiguration.issuerMetadataPolicy,
+              validateRegistrationCertificate: validateIssuerRegistrationCertificate,
+              cacheIssuerMetadata: false
+            ),
+            order: 4
           )
         ]
       }
@@ -284,12 +348,17 @@ struct WalletKitConfigImpl: WalletKitConfig {
       DocumentTypeIdentifier.sdJwtPid.rawValue: .pid
     ]
 
+    _ = loteLocations
     return TrustConfiguration(
-      trustSource: .etsi(
-        EtsiTrustSource(
-          loteLocations: loteLocations,
-          contextTypeMappings: classifications,
-          isRevocationEnabled: false
+      // Local GBO demo build: the GBO roots instead of the EU trusted lists.
+      trustSource: .staticList(
+        StaticListTrustSource(
+          anchorsPerContext: [
+            .wrpac: GboTrust.accessLeaves,
+            .wrprc: GboTrust.registrarLeaves
+          ],
+          method: .directTrust,
+          contextTypeMappings: classifications
         )
       ),
       fallbackTrustSource: .staticList(
