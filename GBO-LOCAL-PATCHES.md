@@ -1,4 +1,4 @@
-# GBO Wallet — local changes
+# GBO Demo Wallet — local changes
 
 App changes (in this clone):
 - `Modules/logic-core/Sources/Config/GboTrust.swift`: GBO roots and pinned leaves.
@@ -16,7 +16,7 @@ App changes (in this clone):
   automatic signing, team UX8N9S62CQ and `EudiWallet.gbo.entitlements`
   (keychain and app group only). Debug configurations use
   `nl.dekokdigital.gbo.wallet.dev`; Release configurations use
-  `nl.dekokdigital.gbo.wallet`. The display name is `GBO Wallet`; the ID Provider extension is no longer built or
+  `nl.dekokdigital.gbo.wallet`. The display name is `GBO Demo Wallet`; the ID Provider extension is no longer built or
   embedded (it needs Apple's identity document services entitlement).
 
 Dependency changes are versioned in public forks (Apache 2.0):
@@ -70,7 +70,7 @@ xcodebuild -project EudiReferenceWallet.xcodeproj -scheme "EUDI Wallet Dev" -con
 - The build used clean checkouts of both pinned GBO dependency commits. Since
   their tags have not been pushed, this verification used temporary Git URL
   redirects to the sibling local clones, scoped to the build process only.
-- Built app display name and identifier: `GBO Wallet`, `nl.dekokdigital.gbo.wallet.dev`.
+- Built app display name and identifier (10 November build): `GBO Wallet`, `nl.dekokdigital.gbo.wallet.dev`.
 - All four configuration names, bundle identifiers, entitlements and icon-set
   references were checked. All asset catalogs parse successfully.
 - Primary body text, secondary text, links and primary buttons meet 4.5:1 in
@@ -79,7 +79,10 @@ xcodebuild -project EudiReferenceWallet.xcodeproj -scheme "EUDI Wallet Dev" -con
   The complete screenshot sequence and credential issuance/presentation smoke
   test are still pending. Native simulator interaction was unavailable; on
   11 November 2026 Jeroen agreed to operate the simulator manually for these
-  checks. No functional test result is claimed until the flow is completed.
+  checks. On 11 November, the Xcode 27 Device Hub was successfully opened and
+  the home, documents and add-document screens were checked in both appearances.
+  The missing `Simulator.app` was its old name, not a missing simulator UI.
+  No successful issuance/presentation result is claimed until those flows finish.
 - Remaining EUDI references are source attribution, upstream documentation and
   licenses, Swift/package/project identifiers, preserved imageset identifiers,
   previews, and existing issuer/trust/RQES service configuration. These are not
@@ -102,3 +105,13 @@ xcodebuild -project EudiReferenceWallet.xcodeproj -scheme "EUDI Wallet Dev" -con
    a public TestFlight link. Clearly identify the simulation environment and
    European Commission reference-wallet origin. App Store Connect is not changed
    by this work.
+
+
+## Name update (11 November 2026)
+
+Jeroen selected **GBO Demo Wallet** as the final visible name, reflecting its use
+with the simulation environment. Display names, in-app product text and the
+internal `CFBundleName` use this name; the latter is also used by the system
+web-authentication consent dialog. Bundle identifiers remain unchanged.
+The GBO wordmark and icons do not change. The PDF signing library remains
+unchanged as explicitly requested. No fourth fork is created.

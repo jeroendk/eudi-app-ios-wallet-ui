@@ -1,4 +1,4 @@
-# GBO Wallet brand assets
+# GBO Demo Wallet brand assets
 
 Source: https://gbo.simulatie.datastelsel.nl/, retrieved 10 November 2026.
 The site uses a text wordmark, `GBO`, in Fira Sans SemiBold (600), rather than a

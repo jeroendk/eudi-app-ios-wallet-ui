@@ -225,3 +225,4 @@ Modified by Jeroen de Kok on 10 November 2026 for the GBO simulation environment
 Based on the European Commission EUDI iOS Wallet reference application (EUPL 1.2).
 GBO modifications: https://github.com/jeroendk/eudi-app-ios-wallet-ui/tree/gbo/main
 GBO wordmark uses Fira Sans SemiBold; see Branding/FiraSans-OFL.txt.
+Application name updated to GBO Demo Wallet by Jeroen de Kok on 11 November 2026.

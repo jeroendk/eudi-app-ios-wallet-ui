@@ -1,8 +1,8 @@
-# GBO Wallet
+# GBO Demo Wallet
 
 ## GBO simulation build
 
-GBO Wallet is a modified version of the European Commission’s
+GBO Demo Wallet is a modified version of the European Commission’s
 [EUDI iOS Wallet reference application](https://github.com/eu-digital-identity-wallet/eudi-app-ios-wallet-ui),
 maintained by Jeroen de Kok for the GBO simulation environment. It is not an
 official EU wallet and does not claim EU wallet certification.

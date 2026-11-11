@@ -101,7 +101,7 @@
 		F0C6207D2B6A6246007F903F /* logic-analytics */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "logic-analytics"; path = "Modules/logic-analytics"; sourceTree = "<group>"; };
 		F0DF43F42BA083DF003498ED /* logic-authentication */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "logic-authentication"; path = "Modules/logic-authentication"; sourceTree = "<group>"; };
 		F12E940E2ABC6C000086EC93 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		F14907B82ABAF54B00DDFE56 /* EudiWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EudiWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F14907B82ABAF54B00DDFE56 /* GBO Demo Wallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GBO Demo Wallet.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F14907BB2ABAF54B00DDFE56 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		F14907BF2ABAF55000DDFE56 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F14907C22ABAF55000DDFE56 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -191,7 +191,7 @@
 		F14907B92ABAF54B00DDFE56 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F14907B82ABAF54B00DDFE56 /* EudiWallet.app */,
+				F14907B82ABAF54B00DDFE56 /* GBO Demo Wallet.app */,
 				9F8701C92F6BE5BC00A865A9 /* EudiReferenceWalletIDProvider.appex */,
 			);
 			name = Products;
@@ -298,8 +298,8 @@
 			packageProductDependencies = (
 				F02AE3902BA6E59600C25C59 /* logic-assembly */,
 			);
-			productName = "GBO Wallet";
-			productReference = F14907B82ABAF54B00DDFE56 /* EudiWallet.app */;
+			productName = "GBO Demo Wallet";
+			productReference = F14907B82ABAF54B00DDFE56 /* GBO Demo Wallet.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -496,7 +496,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = EudiReferenceWalletIDProvider/WalletIdProvider.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "GBO Wallet";
+				INFOPLIST_KEY_CFBundleDisplayName = "GBO Demo Wallet";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -592,7 +592,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = EudiReferenceWalletIDProvider/WalletIdProvider.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "GBO Wallet";
+				INFOPLIST_KEY_CFBundleDisplayName = "GBO Demo Wallet";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -682,7 +682,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = EudiReferenceWalletIDProvider/WalletIdProvider.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "GBO Wallet";
+				INFOPLIST_KEY_CFBundleDisplayName = "GBO Demo Wallet";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -771,7 +771,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = EudiReferenceWalletIDProvider/WalletIdProvider.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "GBO Wallet";
+				INFOPLIST_KEY_CFBundleDisplayName = "GBO Demo Wallet";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -887,7 +887,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Wallet/Wallet.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "GBO Wallet";
+				INFOPLIST_KEY_CFBundleDisplayName = "GBO Demo Wallet";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Share mdoc using BLE peripheral mode";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan QR codes in web pages";
@@ -905,7 +905,8 @@
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = yyyy.mm.v;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.dekokdigital.gbo.wallet.dev;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_MODULE_NAME = EudiWallet;
+				PRODUCT_NAME = "GBO Demo Wallet";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -994,7 +995,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Wallet/Wallet.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "GBO Wallet";
+				INFOPLIST_KEY_CFBundleDisplayName = "GBO Demo Wallet";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Share mdoc using BLE peripheral mode";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan QR codes in web pages";
@@ -1012,7 +1013,8 @@
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = yyyy.mm.v;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.dekokdigital.gbo.wallet;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_MODULE_NAME = EudiWallet;
+				PRODUCT_NAME = "GBO Demo Wallet";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1165,7 +1167,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Wallet/Wallet.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "GBO Wallet";
+				INFOPLIST_KEY_CFBundleDisplayName = "GBO Demo Wallet";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Share mdoc using BLE peripheral mode";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan QR codes in web pages";
@@ -1183,7 +1185,8 @@
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = yyyy.mm.v;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.dekokdigital.gbo.wallet.dev;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_MODULE_NAME = EudiWallet;
+				PRODUCT_NAME = "GBO Demo Wallet";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1216,7 +1219,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Wallet/Wallet.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "GBO Wallet";
+				INFOPLIST_KEY_CFBundleDisplayName = "GBO Demo Wallet";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Share mdoc using BLE peripheral mode";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan QR codes in web pages";
@@ -1234,7 +1237,8 @@
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = yyyy.mm.v;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.dekokdigital.gbo.wallet;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_MODULE_NAME = EudiWallet;
+				PRODUCT_NAME = "GBO Demo Wallet";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

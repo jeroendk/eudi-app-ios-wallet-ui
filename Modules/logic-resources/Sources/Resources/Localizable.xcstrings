@@ -29,7 +29,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Select a document to add in your GBO Wallet"
+            "value" : "Select a document to add in your GBO Demo Wallet"
           }
         }
       }
@@ -1418,7 +1418,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "To access the GBO Wallet you need to provide your biometrics."
+            "value" : "To access the GBO Demo Wallet you need to provide your biometrics."
           }
         }
       }
@@ -1429,7 +1429,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "To access the GBO Wallet you need to provide your PIN."
+            "value" : "To access the GBO Demo Wallet you need to provide your PIN."
           }
         }
       }
@@ -1506,7 +1506,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "GBO Wallet"
+            "value" : "GBO Demo Wallet"
           }
         }
       }
@@ -2147,7 +2147,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The requested document is not available in your GBO Wallet. Please contact the authorised issuer for further information."
+            "value" : "The requested document is not available in your GBO Demo Wallet. Please contact the authorised issuer for further information."
           }
         }
       }
@@ -3852,7 +3852,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "About GBO Wallet"
+            "value" : "About GBO Demo Wallet"
           }
         }
       }
@@ -3874,7 +3874,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "GBO Wallet is based on the European Commission’s %@ (EUPL 1.2). This is a modified version for the GBO simulation environment, not an official EU wallet."
+            "value" : "GBO Demo Wallet is based on the European Commission’s %@ (EUPL 1.2). This is a modified version for the GBO simulation environment, not an official EU wallet."
           }
         }
       }
@@ -3896,7 +3896,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "GBO Wallet source code"
+            "value" : "GBO Demo Wallet source code"
           }
         }
       }
@@ -3918,7 +3918,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "GBO Wallet logo"
+            "value" : "GBO Demo Wallet logo"
           }
         }
       }
@@ -3962,7 +3962,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "GBO Wallet"
+            "value" : "GBO Demo Wallet"
           }
         }
       }
