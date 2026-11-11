@@ -54,10 +54,12 @@ xcodebuild -project EudiReferenceWallet.xcodeproj -scheme "EUDI Wallet Dev" -con
   display the upstream wallet certification badge. Credential trust and issuer
   configuration are unchanged.
 - Jeroen chose to retain PDF signing (RQES). Its dependency chain, including
-  PoDoFo, is retained. The signing SDK retains its own default theme and two embedded EU logo assets.
-  A local proposal replaces those two assets only; publication in an additional
-  RQES UI fork is awaiting Jeroen’s decision. Do not treat signing-screen
-  rebranding as complete until that decision and the follow-up build.
+  PoDoFo, is retained. On 11 November 2026, Jeroen explicitly chose to leave the
+  PDF signing library unchanged and not create an additional fork. The signing
+  SDK therefore retains its default theme and two embedded EU wallet logo assets.
+  This is an accepted branding exception for now; the signing screens are not
+  fully branded as GBO Wallet. The local asset replacement proposal is not used
+  by the application and has not been published.
 - `LICENSE.txt` is byte-for-byte unchanged. Upstream `NOTICE.txt` is preserved
   with a GBO modification notice appended. The `.orig` local backup is excluded
   locally and is never tracked.
@@ -75,7 +77,9 @@ xcodebuild -project EudiReferenceWallet.xcodeproj -scheme "EUDI Wallet Dev" -con
   both appearances (lowest checked text ratio: 7.01:1). Icon lettering: 5.24:1.
 - Simulator launch and welcome-screen captures are available outside the repo.
   The complete screenshot sequence and credential issuance/presentation smoke
-  test are still pending: native simulator interaction was unavailable.
+  test are still pending. Native simulator interaction was unavailable; on
+  11 November 2026 Jeroen agreed to operate the simulator manually for these
+  checks. No functional test result is claimed until the flow is completed.
 - Remaining EUDI references are source attribution, upstream documentation and
   licenses, Swift/package/project identifiers, preserved imageset identifiers,
   previews, and existing issuer/trust/RQES service configuration. These are not
