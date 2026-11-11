@@ -58,7 +58,7 @@ xcodebuild -project EudiReferenceWallet.xcodeproj -scheme "EUDI Wallet Dev" -con
   PDF signing library unchanged and not create an additional fork. The signing
   SDK therefore retains its default theme and two embedded EU wallet logo assets.
   This is an accepted branding exception for now; the signing screens are not
-  fully branded as GBO Wallet. The local asset replacement proposal is not used
+  fully branded as GBO Demo Wallet. The local asset replacement proposal is not used
   by the application and has not been published.
 - `LICENSE.txt` is byte-for-byte unchanged. Upstream `NOTICE.txt` is preserved
   with a GBO modification notice appended. The `.orig` local backup is excluded
@@ -70,19 +70,32 @@ xcodebuild -project EudiReferenceWallet.xcodeproj -scheme "EUDI Wallet Dev" -con
 - The build used clean checkouts of both pinned GBO dependency commits. Since
   their tags have not been pushed, this verification used temporary Git URL
   redirects to the sibling local clones, scoped to the build process only.
-- Built app display name and identifier (10 November build): `GBO Wallet`, `nl.dekokdigital.gbo.wallet.dev`.
+- Final built app `CFBundleName` and `CFBundleDisplayName`: `GBO Demo Wallet`;
+  identifier: `nl.dekokdigital.gbo.wallet.dev`. The system authentication alert
+  was visually checked with this name. The menu title uses the existing
+  `my_eu_wallet` catalog key, whose English value is now the GBO name; upstream
+  had looked up a different literal key and displayed its old fallback.
 - All four configuration names, bundle identifiers, entitlements and icon-set
   references were checked. All asset catalogs parse successfully.
 - Primary body text, secondary text, links and primary buttons meet 4.5:1 in
   both appearances (lowest checked text ratio: 7.01:1). Icon lettering: 5.24:1.
-- Simulator launch and welcome-screen captures are available outside the repo.
-  The complete screenshot sequence and credential issuance/presentation smoke
-  test are still pending. Native simulator interaction was unavailable; on
-  11 November 2026 Jeroen agreed to operate the simulator manually for these
-  checks. On 11 November, the Xcode 27 Device Hub was successfully opened and
-  the home, documents and add-document screens were checked in both appearances.
-  The missing `Simulator.app` was its old name, not a missing simulator UI.
-  No successful issuance/presentation result is claimed until those flows finish.
+- Xcode 27 Device Hub provides the simulator UI. The absence of the former
+  `Simulator.app` does not mean simulator interaction is unavailable. On
+  11 November, home, documents, add-document, offer, presentation request and
+  About were checked in both appearances; captures are outside the repo.
+- Issuance smoke test passed on 11 November: `Demo-inkomen 2025` was requested
+  through the existing mock DigiD login and stored as a valid credential.
+  It initially remained deferred because the running demo adapter reported
+  `activated source snapshot expired outside stale grace`. One normal source
+  reconciliation refreshed the metadata; the pending credential then arrived.
+  No application or backend source/configuration change was needed.
+- Jeroen explicitly approved adding the existing GBO test PID with fictitious
+  data for the presentation smoke test, without changing trust settings.
+  Test-PID issuance passed. Presentation to `Demo unsecured source` passed:
+  the request asked only for the fictitious BSN, Jeroen confirmed with his PIN,
+  and the wallet displayed `Data shared` and a new credential offer from the
+  source. That additional offer was closed, since issuance was already tested.
+  The wallet retains the test PID and the issued income credential.
 - Remaining EUDI references are source attribution, upstream documentation and
   licenses, Swift/package/project identifiers, preserved imageset identifiers,
   previews, and existing issuer/trust/RQES service configuration. These are not
@@ -91,8 +104,9 @@ xcodebuild -project EudiReferenceWallet.xcodeproj -scheme "EUDI Wallet Dev" -con
 
 ## Before TestFlight (Jeroen)
 
-1. Complete the light/dark screenshots for splash, onboarding, document list,
-   add document, offer, presentation and About; run one issuance and presentation.
+1. Review the light/dark screenshots and smoke-test results in the external
+   review folder. Check the retained PDF-signing branding exception before
+   external distribution. The signing flow itself was not part of this smoke test.
 2. Approve publication, then push the two dependency branches and exact tags,
    followed by the app branch. Until then, remote forks contain upstream only.
 3. Select the simulation scheme and Release configuration; verify its existing
