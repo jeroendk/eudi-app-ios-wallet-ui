@@ -170,3 +170,40 @@ Use normal simulator signing and preserve first-run preferences when updating.
 An unsigned build cannot access keychain/app-group data, and a build that the
 app treats as a first run removes the existing documents through the upstream
 first-run cleanup.
+
+
+## Internal TestFlight preparation (11 November 2026)
+
+This updates the earlier release checklist and iOS acceptance status above.
+The iPhone acceptance against the shared simulation passed for the test PID,
+Belastingdienst income statement, Centric permit, and QTSP/ASI test statement,
+including document retention after reopening the app. Mobile-data and PDF
+signing checks were not performed.
+
+The app and extension marketing versions are now `0.1.0`; build `1` remains
+unused in the newly created App Store Connect record for
+`nl.dekokdigital.gbo.wallet` (Apple ID `6833524889`). The record name is
+GBO Demo Wallet and its primary language is Dutch. No build was uploaded.
+
+`Wallet/PrivacyInfo.xcprivacy` is an explicit app resource. It declares
+UserDefaults for the app's own preferences (`CA92.1`) and its App Group
+(`1C8F.1`), matching `PrefsController`. This change does not assert that no
+personal data is processed or replace App Store privacy-label answers.
+
+For this first internal beta Jeroen confirmed Netherlands-only testing.
+The App Store Connect encryption questionnaire was completed with standard
+algorithms in addition to Apple's OS and no distribution in France. Apple
+reported that no documents need uploading and that the Info.plist exemption
+flag can be false. `ITSAppUsesNonExemptEncryption=false` is retained for that
+assessed scope. This does not mean the wallet has no encryption. Reassess
+before France distribution or changes to its cryptographic functionality.
+The archive link map includes CryptoSwift, libsecp256k1 and BoringSSL code;
+the assessment does not rely on claiming that all cryptography is OS-only.
+
+A new Release Dev archive and local App Store Connect export succeeded.
+The exported IPA is signed with Apple Distribution for team UX8N9S62CQ,
+uses an App Store profile with `beta-reports-active=true` and
+`get-task-allow=false`, includes the app manifest, and retains the simulation
+URLs and the exact dependency pins used in the successful iPhone test.
+Local deep/strict code-signature verification passed. Apple upload processing
+has not been run and no internal/external tester invitations were sent.

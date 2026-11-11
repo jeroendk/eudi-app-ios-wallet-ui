@@ -34,6 +34,9 @@
 	<string>$(CHANGELOG_URL)</string>
 	<key>Core User Auth</key>
 	<string>$(CORE_USER_AUTH)</string>
+	<!-- Internal beta: Netherlands only. App Store Connect's standard-encryption
+         questionnaire requires no documentation for this scope (2026-11-11).
+         Reassess before France distribution or changes to the cryptography. -->
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>UILaunchScreen</key>

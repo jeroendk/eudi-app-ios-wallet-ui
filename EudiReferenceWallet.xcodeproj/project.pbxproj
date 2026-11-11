@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BC0A6FB275654741A058924A /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 08CF15D508744294A85FD5F2 /* PrivacyInfo.xcprivacy */; };
 		9F8701D02F6BE5BC00A865A9 /* EudiReferenceWalletIDProvider.appex in Embed ExtensionKit Extensions */ = {isa = PBXBuildFile; fileRef = 9F8701C92F6BE5BC00A865A9 /* EudiReferenceWalletIDProvider.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		9F8701DE2F6BE79B00A865A9 /* DcApi18013AnnexC in Frameworks */ = {isa = PBXBuildFile; productRef = 9F8701DD2F6BE79B00A865A9 /* DcApi18013AnnexC */; };
 		9F8702012F6C41ED00A865A9 /* logic-business in Frameworks */ = {isa = PBXBuildFile; productRef = 9F8702002F6C41ED00A865A9 /* logic-business */; };
@@ -70,6 +71,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		08CF15D508744294A85FD5F2 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		1198ECD72AC453F200F4E71A /* logic-resources */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "logic-resources"; path = "Modules/logic-resources"; sourceTree = "<group>"; };
 		9F8701C92F6BE5BC00A865A9 /* EudiReferenceWalletIDProvider.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.extensionkit-extension"; includeInIndex = 0; path = EudiReferenceWalletIDProvider.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F8701DF2F6BE96C00A865A9 /* EudiWallet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EudiWallet.entitlements; sourceTree = "<group>"; };
@@ -207,6 +209,7 @@
 				F14907BF2ABAF55000DDFE56 /* Assets.xcassets */,
 				F14907C12ABAF55000DDFE56 /* Preview Content */,
 				F09E1EA22AC3443000779C25 /* Wallet.plist */,
+				08CF15D508744294A85FD5F2 /* PrivacyInfo.xcprivacy */,
 			);
 			path = Wallet;
 			sourceTree = "<group>";
@@ -354,6 +357,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC0A6FB275654741A058924A /* PrivacyInfo.xcprivacy in Resources */,
 				F02AE38F2BA6E45F00C25C59 /* logic-assembly in Resources */,
 				F06325122AC59AF50004601F /* feature-test in Resources */,
 				F14907C32ABAF55000DDFE56 /* Preview Assets.xcassets in Resources */,
@@ -505,7 +509,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = yyyy.mm.v;
+				MARKETING_VERSION = 0.1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -601,7 +605,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = yyyy.mm.v;
+				MARKETING_VERSION = 0.1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -691,7 +695,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = yyyy.mm.v;
+				MARKETING_VERSION = 0.1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.dekokdigital.gbo.wallet.IDProvider;
@@ -780,7 +784,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = yyyy.mm.v;
+				MARKETING_VERSION = 0.1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.dekokdigital.gbo.wallet.IDProvider;
@@ -903,7 +907,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = yyyy.mm.v;
+				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.dekokdigital.gbo.wallet.dev;
 				PRODUCT_MODULE_NAME = EudiWallet;
 				PRODUCT_NAME = "GBO Demo Wallet";
@@ -1011,7 +1015,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = yyyy.mm.v;
+				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.dekokdigital.gbo.wallet;
 				PRODUCT_MODULE_NAME = EudiWallet;
 				PRODUCT_NAME = "GBO Demo Wallet";
@@ -1183,7 +1187,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = yyyy.mm.v;
+				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.dekokdigital.gbo.wallet.dev;
 				PRODUCT_MODULE_NAME = EudiWallet;
 				PRODUCT_NAME = "GBO Demo Wallet";
@@ -1235,7 +1239,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = yyyy.mm.v;
+				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.dekokdigital.gbo.wallet;
 				PRODUCT_MODULE_NAME = EudiWallet;
 				PRODUCT_NAME = "GBO Demo Wallet";
