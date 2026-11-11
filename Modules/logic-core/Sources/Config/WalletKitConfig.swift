@@ -142,164 +142,17 @@ struct WalletKitConfigImpl: WalletKitConfig {
 
   var issuersConfig: [String: VciConfig] {
 
-    let openId4VciConfigurations: [VciConfig] = {
-      switch configLogic.appBuildVariant {
-      case .DEMO:
-        return [
-          .init(
-            config: .init(
-              credentialIssuerURL: "https://issuer.eudiw.dev",
-              clientId: "eudiw-abca",
-              keyAttestationsConfig: .init(
-                walletAttestationsProvider: walletKitAttestationProvider,
-                popKeyOptions: KeyOptions(
-                  secureAreaName: SecureEnclaveSecureArea.name,
-                  accessControl: .empty
-                )
-              ),
-              authFlowRedirectionURI: URL(string: "eu.europa.ec.euidi://authorization")!,
-              parUsage: .required(authorizationCodeDPoPBinding: true),
-              allowPlainJwtProof: false,
-              requireDpop: true,
-              issuerMetadataPolicy: trustConfiguration.issuerMetadataPolicy,
-              validateRegistrationCertificate: validateIssuerRegistrationCertificate,
-              cacheIssuerMetadata: false
-            ),
-            order: 1
-          ),
-          .init(
-            config: .init(
-              credentialIssuerURL: "https://issuer-backend.eudiw.dev",
-              clientId: "eudiw-abca",
-              keyAttestationsConfig: .init(
-                walletAttestationsProvider: walletKitAttestationProvider,
-                popKeyOptions: KeyOptions(
-                  secureAreaName: SecureEnclaveSecureArea.name,
-                  accessControl: .empty
-                )
-              ),
-              authFlowRedirectionURI: URL(string: "eu.europa.ec.euidi://authorization")!,
-              parUsage: .required(authorizationCodeDPoPBinding: true),
-              allowPlainJwtProof: false,
-              requireDpop: true,
-              issuerMetadataPolicy: trustConfiguration.issuerMetadataPolicy,
-              validateRegistrationCertificate: validateIssuerRegistrationCertificate,
-              cacheIssuerMetadata: false
-            ),
-            order: 0
-          )
-        ]
-      case .DEV:
-        return [
-          .init(
-            config: .init(
-              credentialIssuerURL: "https://ec.dev.issuer.eudiw.dev",
-              clientId: "eudiw-abca",
-              keyAttestationsConfig: .init(
-                walletAttestationsProvider: walletKitAttestationProvider,
-                popKeyOptions: KeyOptions(
-                  secureAreaName: SecureEnclaveSecureArea.name,
-                  accessControl: .empty
-                )
-              ),
-              authFlowRedirectionURI: URL(string: "eu.europa.ec.euidi://authorization")!,
-              parUsage: .required(authorizationCodeDPoPBinding: true),
-              allowPlainJwtProof: false,
-              requireDpop: true,
-              issuerMetadataPolicy: trustConfiguration.issuerMetadataPolicy,
-              validateRegistrationCertificate: validateIssuerRegistrationCertificate,
-              cacheIssuerMetadata: false
-            ),
-            order: 1
-          ),
-          .init(
-            config: .init(
-              credentialIssuerURL: "https://dev.issuer-backend.eudiw.dev",
-              clientId: "eudiw-abca",
-              keyAttestationsConfig: .init(
-                walletAttestationsProvider: walletKitAttestationProvider,
-                popKeyOptions: KeyOptions(
-                  secureAreaName: SecureEnclaveSecureArea.name,
-                  accessControl: .empty
-                )
-              ),
-              authFlowRedirectionURI: URL(string: "eu.europa.ec.euidi://authorization")!,
-              parUsage: .required(authorizationCodeDPoPBinding: true),
-              allowPlainJwtProof: false,
-              requireDpop: true,
-              issuerMetadataPolicy: trustConfiguration.issuerMetadataPolicy,
-              validateRegistrationCertificate: validateIssuerRegistrationCertificate,
-              cacheIssuerMetadata: false
-            ),
-            order: 0
-          ),
-          // GBO demo: the own credential issuer, wallet-initiated issuance (#614 phase 3).
-          .init(
-            config: .init(
-              credentialIssuerURL: "https://eudi-credential-issuer.studiocodex.nl/rvig/eudi",
-              clientId: "eudiw-abca",
-              keyAttestationsConfig: .init(
-                walletAttestationsProvider: walletKitAttestationProvider,
-                popKeyOptions: KeyOptions(
-                  secureAreaName: SecureEnclaveSecureArea.name,
-                  accessControl: .empty
-                )
-              ),
-              authFlowRedirectionURI: URL(string: "eu.europa.ec.euidi://authorization")!,
-              parUsage: .required(authorizationCodeDPoPBinding: true),
-              allowPlainJwtProof: false,
-              requireDpop: true,
-              issuerMetadataPolicy: trustConfiguration.issuerMetadataPolicy,
-              validateRegistrationCertificate: validateIssuerRegistrationCertificate,
-              cacheIssuerMetadata: false
-            ),
-            order: 2
-          ),
-          .init(
-            config: .init(
-              credentialIssuerURL: "https://eudi-credential-issuer.studiocodex.nl/belastingdienst/eudi",
-              clientId: "eudiw-abca",
-              keyAttestationsConfig: .init(
-                walletAttestationsProvider: walletKitAttestationProvider,
-                popKeyOptions: KeyOptions(
-                  secureAreaName: SecureEnclaveSecureArea.name,
-                  accessControl: .empty
-                )
-              ),
-              authFlowRedirectionURI: URL(string: "eu.europa.ec.euidi://authorization")!,
-              parUsage: .required(authorizationCodeDPoPBinding: true),
-              allowPlainJwtProof: false,
-              requireDpop: true,
-              issuerMetadataPolicy: trustConfiguration.issuerMetadataPolicy,
-              validateRegistrationCertificate: validateIssuerRegistrationCertificate,
-              cacheIssuerMetadata: false
-            ),
-            order: 3
-          ),
-          .init(
-            config: .init(
-              credentialIssuerURL: "https://eudi-credential-issuer.studiocodex.nl/demo-unsecured/eudi",
-              clientId: "eudiw-abca",
-              keyAttestationsConfig: .init(
-                walletAttestationsProvider: walletKitAttestationProvider,
-                popKeyOptions: KeyOptions(
-                  secureAreaName: SecureEnclaveSecureArea.name,
-                  accessControl: .empty
-                )
-              ),
-              authFlowRedirectionURI: URL(string: "eu.europa.ec.euidi://authorization")!,
-              parUsage: .required(authorizationCodeDPoPBinding: true),
-              allowPlainJwtProof: false,
-              requireDpop: true,
-              issuerMetadataPolicy: trustConfiguration.issuerMetadataPolicy,
-              validateRegistrationCertificate: validateIssuerRegistrationCertificate,
-              cacheIssuerMetadata: false
-            ),
-            order: 4
-          )
-        ]
-      }
-    }()
+    let openId4VciConfigurations: [VciConfig] = GboTrust.issuerUrls.enumerated().map { index, url in
+      .init(config: .init(
+        credentialIssuerURL: url, clientId: "eudiw-abca",
+        keyAttestationsConfig: .init(walletAttestationsProvider: walletKitAttestationProvider,
+          popKeyOptions: KeyOptions(secureAreaName: SecureEnclaveSecureArea.name, accessControl: .empty)),
+        authFlowRedirectionURI: URL(string: "eu.europa.ec.euidi://authorization")!,
+        parUsage: .required(authorizationCodeDPoPBinding: true), allowPlainJwtProof: false,
+        requireDpop: true, issuerMetadataPolicy: trustConfiguration.issuerMetadataPolicy,
+        validateRegistrationCertificate: validateIssuerRegistrationCertificate, cacheIssuerMetadata: false
+      ), order: index)
+    }
 
     return openId4VciConfigurations.reduce(
       into: [String: VciConfig]()
@@ -307,11 +160,11 @@ struct WalletKitConfigImpl: WalletKitConfig {
       guard
         let issuer = config.config.credentialIssuerURL,
         let url = URL(string: issuer),
-        let host = url.host
+        url.scheme == "https", url.host != nil
       else {
         return
       }
-      dict[host] = config
+      dict[issuer] = config
     }
   }
 
@@ -333,60 +186,28 @@ struct WalletKitConfigImpl: WalletKitConfig {
   }
 
   var trustConfiguration: TrustConfiguration {
-    let loteLocations = SupportedLists<NSString>(
-      pidProviders: "https://trustedlist.serviceproviders.eudiw.dev/LOTE/json/PIDProviders.jwt",
-      walletProviders: nil,
-      wrpacProviders: "https://trustedlist.serviceproviders.eudiw.dev/LOTE/json/WRPACProviders.jwt",
-      wrprcProviders: "https://trustedlist.serviceproviders.eudiw.dev/LOTE/json/WRPRCProviders.jwt",
-      pubEaaProviders: "https://trustedlist.serviceproviders.eudiw.dev/LOTE/json/PubEAAProviders.jwt",
-      qeaProviders: nil,
-      eaaProviders: [:]
-    )
-
     let classifications: EtsiContextTypeMappings = [
       DocumentTypeIdentifier.mDocPid.rawValue: .pid,
-      DocumentTypeIdentifier.sdJwtPid.rawValue: .pid
+      DocumentTypeIdentifier.sdJwtPid.rawValue: .pid,
+      GboTrust.nlPid: .pid
     ]
-
-    _ = loteLocations
     return TrustConfiguration(
-      // Local GBO demo build: the GBO roots instead of the EU trusted lists.
-      trustSource: .staticList(
-        StaticListTrustSource(
-          anchorsPerContext: [
-            .wrpac: GboTrust.accessLeaves,
-            .wrprc: GboTrust.registrarLeaves
-          ],
-          method: .directTrust,
-          contextTypeMappings: classifications
-        )
-      ),
-      fallbackTrustSource: .staticList(
-        StaticListTrustSource(rootCertificates: staticRootCertificates)
-      ),
+      trustSource: .etsi(EtsiTrustSource(
+        loteLocations: GboTrust.locations, profile: .gboDemo, customLoader: GboTrust.loader,
+        contextTypeMappings: classifications, cacheTtlHours: 1,
+        customJwtSignatureVerifier: GboTrust.verifier, isRevocationEnabled: false
+      )),
       defaultPolicy: .warning,
       docTypePolicies: [
         DocumentTypeIdentifier.mDocPid.rawValue: .enforce,
-        DocumentTypeIdentifier.sdJwtPid.rawValue: .enforce
+        DocumentTypeIdentifier.sdJwtPid.rawValue: .enforce,
+        GboTrust.nlPid: .enforce
       ],
       requireSignedMetadata: true,
       statusTrustPolicy: .warning,
       wrprcVpTrustPolicy: .warning,
       wrprcVciTrustPolicy: .enforce
     )
-  }
-
-  var staticRootCertificates: [Data] {
-    [
-      "pidissuerca02_cz",
-      "pidissuerca02_ee",
-      "pidissuerca02_eu",
-      "pidissuerca02_lu",
-      "pidissuerca02_nl",
-      "pidissuerca02_pt",
-      "pidissuerca02_ut",
-      "r45_staging"
-    ].compactMap { loadCertificate($0) }
   }
 
   var logFileName: String {

@@ -129,3 +129,44 @@ internal `CFBundleName` use this name; the latter is also used by the system
 web-authentication consent dialog. Bundle identifiers remain unchanged.
 The GBO wordmark and icons do not change. The PDF signing library remains
 unchanged as explicitly requested. No fourth fork is created.
+
+
+## GBO LoTE profile (#614, 11 November 2026)
+
+This supersedes the static GBO trust configuration described above. The wallet
+uses only the four centrally signed GBO LoTE URLs, with SchemeTerritory NL and
+an explicit GBO demo profile. The scheme signer is anchored to an independent
+public root supplied per build. No credential/reader/registrar root or end
+certificate remains pinned in GboTrust, and there is no static fallback.
+
+The NL PID vct urn:eudi:pid:nl:1 is classified as PID. The demo maps non-PID
+attestations to PubEAA, preserves the existing trust enforcement/warning choices,
+and keeps PKIX revocation disabled as an explicit demo shortcut. The local SDK
+patch supplies the missing PubEAA mapping and uses CA path validation rather
+than EU end-certificate profiles. Registration trust uses WRPRC from the same
+central provider. The registration toggle retains its existing behavior.
+
+Build endpoints and the public LoTE root are explicit inputs; there is no
+hardcoded simulation hostname. The issuer list contains rvig, belastingdienst,
+demo-unsecured and test-pid. Both anchor caches use one hour. Android's file
+cache is patched to actually refresh hourly and to preserve a verified cache
+until signed NextUpdate after an outage. iOS has a verified memory-only JWT
+cache and uses normal URLSession TLS. See GBO-demo/wallet-patches/README.md for
+cache limits, source revisions, verification fixtures and reproducible commands.
+
+All SDK source patches remain local and unpublished; there is no new GitHub
+fork or published binary. Existing branding and PDF signing work is preserved.
+The full Android build and Kotlin verifier fixture tests pass. Swift verifier
+fixture tests pass; the manual wallet acceptance tests are not complete.
+
+The iOS issuer registry now uses the complete issuer URL, preserving all four
+providers sharing a host. The existing wallet-kit SDK also needs the local
+metadata-cache fix: its global dictionary was written concurrently, causing a
+SIGSEGV while loading the four issuers. The patch synchronizes access and makes
+the existing cacheIssuerMetadata=false setting effective. Builds use the prepared
+GBO_SECURITY_PACKAGE_PATH and GBO_WALLET_KIT_PACKAGE_PATH packages.
+
+Use normal simulator signing and preserve first-run preferences when updating.
+An unsigned build cannot access keychain/app-group data, and a build that the
+app treats as a first run removes the existing documents through the upstream
+first-run cleanup.

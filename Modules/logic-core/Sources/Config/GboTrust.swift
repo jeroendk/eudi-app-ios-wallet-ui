@@ -1,35 +1,80 @@
-/*
- * Local GBO demo build: trust in the GBO development roots, for testing the
- * GBO credential issuer. Not part of the upstream wallet.
- */
 import Foundation
+import EudiEtsi1196x2
 
+/// Build-supplied GBO simulation endpoints and independent public scheme root.
+/// There are no credential, reader or registrar pins and no static fallback.
 enum GboTrust {
-  /// Issuer root: signs the credentials and status lists of every GBO source.
-  static let issuerRoot = Data(base64Encoded: "MIIBiTCCAS6gAwIBAgIUHJLruDUmfJgUM7D3piMp6RNNfswwCgYIKoZIzj0EAwIwGDEWMBQGA1UEAwwNY2EuZ2JvLWlzc3VlcjAeFw0yNjA0MzAxMzQyMjBaFw0yNzA0MzAxMzQyMjBaMBgxFjAUBgNVBAMMDWNhLmdiby1pc3N1ZXIwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAASc4OycS0OXuFk8zB1R8z3Yjl1DedFvJOL+CT9+2bFp9Yb+dyURW4rL0rfYi+zPssl97DovW7hOaP4W+TYtHgsbo1YwVDAfBgNVHSMEGDAWgBRmuCYwbNJy//MDDFi4xfnu0p9ZwzAdBgNVHQ4EFgQUZrgmMGzScv/zAwxYuMX57tKfWcMwEgYDVR0TAQH/BAgwBgEB/wIBADAKBggqhkjOPQQDAgNJADBGAiEAyxkQj9oqLO70Xc3GoPo3+qcUGvcMj/NAs7eYka+M0C0CIQCQh1Wx1Ry4g+FlKnxh+Cfu5V2L3hyHwDIqO/46sv6+0w==")!
-  /// Reader root: the access certificates (WRPAC) that sign the issuer metadata.
-  static let readerRoot = Data(base64Encoded: "MIIBiDCCAS6gAwIBAgIUHuxNEcHM3zjUOim4ssEtRjPQehowCgYIKoZIzj0EAwIwGDEWMBQGA1UEAwwNY2EuZ2JvLXJlYWRlcjAeFw0yNjA0MzAxMzQyNThaFw0yNzA0MzAxMzQyNThaMBgxFjAUBgNVBAMMDWNhLmdiby1yZWFkZXIwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAARVwP6qTO2b+ysq6G9sSYynlZNwl05evTui3ZIu6SrgRHpy/77i1lJJVPZpSAnWoqDrhIh81vX5zzKkKJAmi1pvo1YwVDAfBgNVHSMEGDAWgBTU5WOQERPOvatUqfnDqLSSo6n18zAdBgNVHQ4EFgQU1OVjkBETzr2rVKn5w6i0kqOp9fMwEgYDVR0TAQH/BAgwBgEB/wIBADAKBggqhkjOPQQDAgNIADBFAiEA9qnhy+mr9dFeabtgSrJl8HIwem73sttEWqxBO4SxHhkCIC8KMcbB+0OpW7xFydWxa0t/Hhg4NftqF80cn8kG03bE")!
-  /// Registrar root: the registration certificates (WRPRC) and their status list.
-  static let registrarRoot = Data(base64Encoded: "MIIB1DCCAXugAwIBAgIQTPhN2rtyilJQKHoNaHYUHjAKBggqhkjOPQQDAjBJMQswCQYDVQQGEwJOTDERMA8GA1UEChMIR0JPIERlbW8xJzAlBgNVBAMTHkdCTyBkZXZlbG9wbWVudCByZWdpc3RyYXIgcm9vdDAeFw0yNjExMDIxMjMzNTJaFw0zNjExMDIxMjM4NTJaMEkxCzAJBgNVBAYTAk5MMREwDwYDVQQKEwhHQk8gRGVtbzEnMCUGA1UEAxMeR0JPIGRldmVsb3BtZW50IHJlZ2lzdHJhciByb290MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEWAR0S05fH7TmuzQMjXSZG4NVqYwV/18fkx0DMt7Ma9QAtJB/7gW8jh0QIwyPwuzeRbrs73oZdeNNYKHwmXfisqNFMEMwDgYDVR0PAQH/BAQDAgEGMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFEaqfqztObi6I1mo9l24DfzjwbLWMAoGCCqGSM49BAMCA0cAMEQCICKHlteKwzQJjRVcQISxbFiiJngE52a0qYTVD7TFn4BmAiBz8m6uMaF/m36seo/qyFhN4iybl5N8+ka9uBDG9vDngQ==")!
+  static let nlPid = "urn:eudi:pid:nl:1"
+  static func setting(_ name: String) -> String { Bundle.main.object(forInfoDictionaryKey: name) as? String ?? "" }
+  static var issuerBase: String { setting("GBO_ISSUER_BASE_URL").trimmingCharacters(in: CharacterSet(charactersIn: "/")) }
+  static var issuerUrls: [String] { ["rvig", "belastingdienst", "demo-unsecured", "test-pid"].map { "\(issuerBase)/\($0)/eudi" } }
+  static var locations: SupportedLists<NSString> {
+    let base = setting("GBO_TRUST_BASE_URL").trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+    func location(_ role: String) -> NSString? {
+      guard let url = URL(string: base), url.scheme == "https", url.host != nil else { return nil }
+      return "\(base)/lote/\(role)Providers.jwt" as NSString
+    }
+    return SupportedLists(pidProviders: location("PID"), walletProviders: nil,
+                          wrpacProviders: location("WRPAC"), wrprcProviders: location("WRPRC"),
+                          pubEaaProviders: location("PubEAA"), qeaProviders: nil, eaaProviders: [:])
+  }
+  static let verifier = GboLoTEVerifier(root: Data(base64Encoded: setting("GBO_LOTE_ROOT_BASE64")) ?? Data())
+  static let loader = GboLoTELoader(verifier: verifier)
+}
 
-  /// Demo shortcut: iOS validates a static chain only with a revocation
-  /// response, which these development certificates cannot give. The build
-  /// therefore pins the exact leaves: the access certificates (WRPAC) of the
-  /// sources, the test PID provider, the reference QTSP and the ASI
-  /// authorization server, and the
-  /// registrar's signer and status certificates. A new certificate needs a
-  /// new build.
-  static let accessLeaves: [Data] = [
-    Data(base64Encoded: "MIIB6TCCAY6gAwIBAgIRAKK0+9zo2FAOCVj7Fyg1NUQwCgYIKoZIzj0EAwIwGDEWMBQGA1UEAwwNY2EuZ2JvLXJlYWRlcjAeFw0yNjExMDIxMzU0MTFaFw0yNzA0MzAxMzQyNThaMFoxCzAJBgNVBAYTAk5MMRgwFgYDVQQKEw9CZWxhc3RpbmdkaWVuc3QxGDAWBgNVBAMTD0JlbGFzdGluZ2RpZW5zdDEXMBUGA1UEYRMOTlRSTkwtOTk5OTAyMDAwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAATfDAyKrGkqsGP+XVLPhHVuwrRXYTkJNZ8qvWvcrCUhkJY2y5oBsCSNWOfYbXYr5qip/DFUyKG2sJFOMh0JLfNBo3cwdTAOBgNVHQ8BAf8EBAMCB4AwHwYDVR0jBBgwFoAU1OVjkBETzr2rVKn5w6i0kqOp9fMwQgYDVR0fBDswOTA3oDWgM4YxaHR0cHM6Ly9ldWRpLXRydXN0LnN0dWRpb2NvZGV4Lm5sL3JlYWRlci1yb290LmNybDAKBggqhkjOPQQDAgNJADBGAiEAzYmrD2ZEGbG9R7uFHPsRXIvDo8ooLGnylcV+WDSsT6gCIQC6VQV3HdzALCOf4JObCq5vPcVIip57PggE3s8eJ6RUJw==")!,
-    Data(base64Encoded: "MIIB0TCCAXegAwIBAgIQP2GqspraII30oy9x7/QpyzAKBggqhkjOPQQDAjAYMRYwFAYDVQQDDA1jYS5nYm8tcmVhZGVyMB4XDTI2MTEwMjEzNTQxNVoXDTI3MDQzMDEzNDI1OFowRDELMAkGA1UEBhMCTkwxDTALBgNVBAoTBFJ2SUcxDTALBgNVBAMTBFJ2SUcxFzAVBgNVBGETDk5UUk5MLTk5OTkwMzAwMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAESB3SAvynM0qA4C/5KyfW41HfZdw0waZ4DfSVG5TahGeoRTc4tKSkld9CotBWZALpmeaL+SdjYIikk1KcI1jNnqN3MHUwDgYDVR0PAQH/BAQDAgeAMB8GA1UdIwQYMBaAFNTlY5ARE869q1Sp+cOotJKjqfXzMEIGA1UdHwQ7MDkwN6A1oDOGMWh0dHBzOi8vZXVkaS10cnVzdC5zdHVkaW9jb2RleC5ubC9yZWFkZXItcm9vdC5jcmwwCgYIKoZIzj0EAwIDSAAwRQIhAKVrhkMo4SZKQz6u4x0nUG3aV54FsjV7fFJxzmn6SK1KAiA9djEAJK3rAC7d9703Zps+ISn1yx8+aqdlu1oVYgW/2w==")!,
-    Data(base64Encoded: "MIIB9DCCAZqgAwIBAgIRAMv7TZ7PtXhA2sIOPuKbTfQwCgYIKoZIzj0EAwIwGDEWMBQGA1UEAwwNY2EuZ2JvLXJlYWRlcjAeFw0yNjExMDIxMzU0MjBaFw0yNzA0MzAxMzQyNThaMGYxCzAJBgNVBAYTAk5MMR4wHAYDVQQKExVEZW1vIHVuc2VjdXJlZCBzb3VyY2UxHjAcBgNVBAMTFURlbW8gdW5zZWN1cmVkIHNvdXJjZTEXMBUGA1UEYRMOTlRSTkwtOTk5OTA5MDAwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAASIFaM8UaBs14KIQUMpWnVarQ7AuFElUnpiWsIlIlP3CKw3hZBvQVYFc+FX1vFohExq1dwY4uTxw2m4mPfPnW5po3cwdTAOBgNVHQ8BAf8EBAMCB4AwHwYDVR0jBBgwFoAU1OVjkBETzr2rVKn5w6i0kqOp9fMwQgYDVR0fBDswOTA3oDWgM4YxaHR0cHM6Ly9ldWRpLXRydXN0LnN0dWRpb2NvZGV4Lm5sL3JlYWRlci1yb290LmNybDAKBggqhkjOPQQDAgNIADBFAiAq+ikD+J6++alIlZaavHmqylsSmDJEFPWrTqy5WnrUgQIhANQLhM4a6XBOvhQfl2kKlzZNTVrou6ZmmanwU9UTok2Z")!,
-    Data(base64Encoded: "MIIB4TCCAYegAwIBAgIQN5o2GuLMHgKr/l0KlHaiFTAKBggqhkjOPQQDAjAYMRYwFAYDVQQDDA1jYS5nYm8tcmVhZGVyMB4XDTI2MTEwMzEwMTM0NFoXDTI3MDQzMDEzNDI1OFowVDELMAkGA1UEBhMCTkwxFTATBgNVBAoTDEdCTyB0ZXN0LVBJRDEVMBMGA1UEAxMMR0JPIHRlc3QtUElEMRcwFQYDVQRhEw5OVFJOTC05OTk5MDEwMDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABAEahoEnvsjdVI6DSxwiUvcEQMO6TzcRteYqDQRjg3mgHGDWb8ZHOZMQrA1nVRFFZ/Jt8F5UAkNEMXN567nHZASjdzB1MA4GA1UdDwEB/wQEAwIHgDAfBgNVHSMEGDAWgBTU5WOQERPOvatUqfnDqLSSo6n18zBCBgNVHR8EOzA5MDegNaAzhjFodHRwczovL2V1ZGktdHJ1c3Quc3R1ZGlvY29kZXgubmwvcmVhZGVyLXJvb3QuY3JsMAoGCCqGSM49BAMCA0gAMEUCIQDnF3uCcLqj9G9u5fjxI5R+onZYcPGR6kmGopYGxPMBCgIgN4ifh9EyhTtMJEFGsArnKeGMHPcbpy+Nkv29DcYCwbc=")!,
-    Data(base64Encoded: "MIIB7TCCAZOgAwIBAgIQGLSzypFBT26DINXsYAJHsDAKBggqhkjOPQQDAjAYMRYwFAYDVQQDDA1jYS5nYm8tcmVhZGVyMB4XDTI2MTEwNDEwMDYwMFoXDTI3MDQzMDEzNDI1OFowYDELMAkGA1UEBhMCTkwxGzAZBgNVBAoTEkdCTyBkZW1vIHRlc3QgUVRTUDEbMBkGA1UEAxMSR0JPIGRlbW8gdGVzdCBRVFNQMRcwFQYDVQRhEw5OVFJOTC05OTk5MTMwMDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABAcq0M+o34ahs8QOGOSc4j/gJgWDn0eTe/22jMlYjfvm1uHqjYui07I5PKvpdUSjn8x+p3180ezXgN/XVw64aCujdzB1MA4GA1UdDwEB/wQEAwIHgDAfBgNVHSMEGDAWgBTU5WOQERPOvatUqfnDqLSSo6n18zBCBgNVHR8EOzA5MDegNaAzhjFodHRwczovL2V1ZGktdHJ1c3Quc3R1ZGlvY29kZXgubmwvcmVhZGVyLXJvb3QuY3JsMAoGCCqGSM49BAMCA0gAMEUCIQCj3SMcu73QmOI1feZspE1bStk9/jPGbwDNRHys2e4vDQIgTBx6UsG7nN/tYbYReL8iSlV7zsOMOt3Vq/2b1n1nhkU=")!,
-    // The ASI authorization server as verifier (eudi-wallet-verifier, #639).
-    Data(base64Encoded: "MIICCzCCAbKgAwIBAgIRANF2SHoyINIuXsl+z7LWjXYwCgYIKoZIzj0EAwIwGDEWMBQGA1UEAwwNY2EuZ2JvLXJlYWRlcjAeFw0yNjExMTAwNzE5MjFaFw0yNzA0MzAxMzQyNThaMH4xCzAJBgNVBAYTAk5MMSowKAYDVQQKEyFHQk8gZGVtbyBBU0lQIChhdXRvcmlzYXRpZXNlcnZlcikxKjAoBgNVBAMTIUdCTyBkZW1vIEFTSVAgKGF1dG9yaXNhdGllc2VydmVyKTEXMBUGA1UEYRMOTlRSTkwtOTk5OTE0MDAwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAASScIhusiYhSoSA9ZEP7Wich/HDjFovEvdq1ug/6p9+cUcKMsPf2cMWiSadGzLxs8VxBZSDBYZ6TKigUmyEDzPFo3cwdTAOBgNVHQ8BAf8EBAMCB4AwHwYDVR0jBBgwFoAU1OVjkBETzr2rVKn5w6i0kqOp9fMwQgYDVR0fBDswOTA3oDWgM4YxaHR0cHM6Ly9ldWRpLXRydXN0LnN0dWRpb2NvZGV4Lm5sL3JlYWRlci1yb290LmNybDAKBggqhkjOPQQDAgNHADBEAiAIN8OgkcSS1zzFDmFVJ1GuT5KaSPnOJW3MqNAHdq9A4gIgYWfpsMtCovFY1TaY1B8CxeWHqqHcM1SurjlYrSVaQ6M=")!,
-  ]
-  static let registrarLeaves: [Data] = [
-    Data(base64Encoded: "MIIBvzCCAWWgAwIBAgIRAMFltp33sruVITma3tdzjBIwCgYIKoZIzj0EAwIwSTELMAkGA1UEBhMCTkwxETAPBgNVBAoTCEdCTyBEZW1vMScwJQYDVQQDEx5HQk8gZGV2ZWxvcG1lbnQgcmVnaXN0cmFyIHJvb3QwHhcNMjYxMTAyMTM1NDExWhcNMjcxMTAyMTM1OTExWjBEMQswCQYDVQQGEwJOTDERMA8GA1UEChMIR0JPIERlbW8xIjAgBgNVBAMTGUdCTyBkZXZlbG9wbWVudCByZWdpc3RyYXIwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAQaeHFgzj26itCu+4foaHj68glmjweX1a27ncRdfw4C9vIOqmBKxxe/l/mSjz3jVOSlslDt32HlLSY+61Qt09PNozMwMTAOBgNVHQ8BAf8EBAMCB4AwHwYDVR0jBBgwFoAURqp+rO05uLojWaj2XbgN/OPBstYwCgYIKoZIzj0EAwIDSAAwRQIhANCW7rLqn/88b1UFqlOtwXZdqv4rFTgAqntieXfHl6FqAiB3BN3EIc6/LA8ak68a0gCuq6yRh+ymRqZFfI3GsdBXag==")!,
-    Data(base64Encoded: "MIIB0zCCAXmgAwIBAgIQNLNZeiRrjreSX/+8IR47nTAKBggqhkjOPQQDAjBJMQswCQYDVQQGEwJOTDERMA8GA1UEChMIR0JPIERlbW8xJzAlBgNVBAMTHkdCTyBkZXZlbG9wbWVudCByZWdpc3RyYXIgcm9vdDAeFw0yNjExMDIxMzU0MTFaFw0yNzExMDIxMzU5MTFaMEQxCzAJBgNVBAYTAk5MMREwDwYDVQQKEwhHQk8gRGVtbzEiMCAGA1UEAxMZR0JPIGRldmVsb3BtZW50IHJlZ2lzdHJhcjBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABPoupjjD0MlvhxeopLbnmdrx4ygnOcOs6wSVBhAwyEZoDCAVFuSWP0MidGNuhkna0kB8eumJzBT+mmZU3Lb3fJyjSDBGMA4GA1UdDwEB/wQEAwIHgDATBgNVHSUEDDAKBggrBgEFBQcDfzAfBgNVHSMEGDAWgBRGqn6s7Tm4uiNZqPZduA3848Gy1jAKBggqhkjOPQQDAgNIADBFAiEAqbH8OA7pYPI3B+3AtvC5SXaP7wFhU+mUJsTpB9b97AwCICzYRsrNS/Qsa5wKE2SAO7bAftSM4x5VNMDnglHrTyAU")!
-  ]
+final class GboLoTELoader: NSObject, IosLoadLoTE, @unchecked Sendable {
+  private let cache: GboLoTECache
+  init(verifier: GboLoTEVerifier) { cache = GboLoTECache(verifier: verifier) }
+  func loadLoTE(uri: String) async throws -> any LoadLoTEOutcome {
+    do {
+      let compact: Swift.String = try await cache.load(uri)
+      return LoadLoTEOutcomeLoaded<NSString>(content: compact as NSString)
+    }
+    catch { return LoadLoTEOutcomeNotFound(cause: nil) }
+  }
+}
+
+private actor GboLoTECache {
+  struct Entry { let jwt: String; let loaded: Date }
+  private var entries: [String: Entry] = [:]
+  private let verifier: GboLoTEVerifier
+  init(verifier: GboLoTEVerifier) { self.verifier = verifier }
+  func load(_ uri: String) async throws -> String {
+    guard let url = URL(string: uri), url.scheme == "https", url.host != nil,
+          ["PID", "PubEAA", "WRPAC", "WRPRC"].contains(where: { url.lastPathComponent == "\($0)Providers.jwt" }) else { throw GboLoTEVerifier.Failure.invalidList }
+    let now = Date()
+    if let entry = entries[uri], now.timeIntervalSince(entry.loaded) < 3600,
+       (try? verifier.verify(entry.jwt, now: now)) != nil { return entry.jwt }
+    do {
+      var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 15)
+      request.setValue("no-cache", forHTTPHeaderField: "Cache-Control")
+      let session = URLSession(configuration: .ephemeral)
+      defer { session.invalidateAndCancel() }
+      let (data, response) = try await session.data(for: request)
+      guard let http = response as? HTTPURLResponse, http.statusCode == 200,
+            response.url == url, data.count <= 4 * 1024 * 1024,
+            let jwt = String(data: data, encoding: .utf8) else { throw GboLoTEVerifier.Failure.invalidList }
+      let compact = jwt.trimmingCharacters(in: .whitespacesAndNewlines)
+      try verifier.verify(compact)
+      // The role in the signed document must also match the URL requested.
+      let parts = compact.split(separator: ".")
+      let claims = try JSONSerialization.jsonObject(with: GboLoTEVerifier.decode(String(parts[1]))) as! [String: Any]
+      let info = (claims["LoTE"] as! [String: Any])["ListAndSchemeInformation"] as! [String: Any]
+      let role = url.lastPathComponent.replacingOccurrences(of: "Providers.jwt", with: "")
+      guard info["LoTEType"] as? String == "http://uri.etsi.org/19602/LoTEType/EU\(role)ProvidersList" else { throw GboLoTEVerifier.Failure.invalidList }
+      entries[uri] = Entry(jwt: compact, loaded: Date())
+      return compact
+    } catch {
+      // Last successfully verified list, only while still signed and current.
+      if let entry = entries[uri], (try? verifier.verify(entry.jwt)) != nil { return entry.jwt }
+      throw error
+    }
+  }
+}
+
+extension GboLoTEVerifier: VerifyJwtSignature {
+  func invoke(jwt: String) async throws -> any VerifyJwtSignatureOutcome {
+    try verify(jwt)
+    return VerifyJwtSignatureOutcomeVerified(jwt: jwt)
+  }
 }

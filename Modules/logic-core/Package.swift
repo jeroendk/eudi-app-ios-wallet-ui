@@ -2,6 +2,12 @@
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
+import Foundation
+
+guard let gboSecurity = ProcessInfo.processInfo.environment["GBO_SECURITY_PACKAGE_PATH"],
+      let gboWalletKit = ProcessInfo.processInfo.environment["GBO_WALLET_KIT_PACKAGE_PATH"] else {
+  fatalError("Set GBO_SECURITY_PACKAGE_PATH to the prepared GBO LoTE SDK; see GBO-LOCAL-PATCHES.md")
+}
 
 let package = Package(
   name: "logic-core",
@@ -12,10 +18,8 @@ let package = Package(
       targets: ["logic-core"])
   ],
   dependencies: [
-    .package(
-      url: "https://github.com/jeroendk/eudi-lib-ios-wallet-kit.git",
-      exact: "0.54.5-gbo.1"
-    ),
+    .package(path: gboSecurity),
+    .package(path: gboWalletKit),
     .package(
       name: "logic-resources",
       path: "./logic-resources"
@@ -37,6 +41,7 @@ let package = Package(
     .target(
       name: "logic-core",
       dependencies: [
+        .product(name: "MdocSecurity18013", package: "eudi-lib-ios-iso18013-security"),
         "logic-resources",
         "logic-business",
         "logic-storage",

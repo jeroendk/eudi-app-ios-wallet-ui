@@ -495,7 +495,7 @@ final actor WalletKitControllerImpl: WalletKitController {
                   let id = DocumentTypeIdentifier(rawValue: config.docType)
                   return ScopedDocument(
                     name: config.credentialMetadata?.display.getName(fallback: credential.key.value) ?? credential.key.value,
-                    issuer: metadata.credentialIssuerIdentifier.url.host.ifNilOrEmpty { issuerName },
+                    issuer: issuerName,
                     order: orderedVciConfig.order,
                     configId: credential.key.value,
                     isPid: id == .mDocPid,
@@ -507,7 +507,7 @@ final actor WalletKitControllerImpl: WalletKitController {
                   let id = DocumentTypeIdentifier(rawValue: vct)
                   return ScopedDocument(
                     name: config.credentialMetadata?.display.getName(fallback: credential.key.value) ?? credential.key.value,
-                    issuer: metadata.credentialIssuerIdentifier.url.host.ifNilOrEmpty { issuerName },
+                    issuer: issuerName,
                     order: orderedVciConfig.order,
                     configId: credential.key.value,
                     isPid: id == .sdJwtPid,

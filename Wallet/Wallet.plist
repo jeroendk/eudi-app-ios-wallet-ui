@@ -2,6 +2,9 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>GBO_TRUST_BASE_URL</key><string>$(GBO_TRUST_BASE_URL)</string>
+    <key>GBO_ISSUER_BASE_URL</key><string>$(GBO_ISSUER_BASE_URL)</string>
+    <key>GBO_LOTE_ROOT_BASE64</key><string>$(GBO_LOTE_ROOT_BASE64)</string>
 	<key>Build Type</key>
 	<string>$(BUILD_TYPE)</string>
 	<key>Build Variant</key>
