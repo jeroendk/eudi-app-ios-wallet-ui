@@ -1,3 +1,11 @@
+> Current source, 12 November 2026: synchronized with upstream main. The
+> previous OpenID4VCI audience and credential-identifier patches are now supplied
+> by upstream (OpenID4VCI 0.55.7, WalletKit 0.61.1). Local trust-profile, metadata-
+> cache and Keychain patches are maintained in gbo-wallet-patches at pinned new
+> upstream revisions. The new source is candidate 0.1.0 (3), not uploaded here.
+> Build 2 and its earlier SDK inputs remain recoverable. Sections below are
+> chronological; this notice supersedes the older dependency/build instructions.
+
 # GBO Demo Wallet — local changes
 
 App changes (in this clone):
