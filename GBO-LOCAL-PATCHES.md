@@ -207,3 +207,18 @@ uses an App Store profile with `beta-reports-active=true` and
 URLs and the exact dependency pins used in the successful iPhone test.
 Local deep/strict code-signature verification passed. Apple upload processing
 has not been run and no internal/external tester invitations were sent.
+
+## App icon refresh (11 November 2026)
+
+At Jeroen's request, both app-icon sets now use a wallet silhouette with the
+existing GBO wordmark and site palette, in light and dark appearances.
+Editable outlined SVGs and a size preview are in `Branding/`. The four
+1024×1024 PNGs are opaque RGB; asset catalog identifiers are unchanged.
+This is for a future build: 0.1.0 (1) was uploaded successfully and Apple
+was processing it at the last confirmed status. The uploaded archive and IPA
+were not changed by this asset refresh.
+
+The icon update is prepared as version `0.1.0`, build `2`; all eight app and
+extension build-number settings were incremented together. The release uses
+the same simulation endpoints, LoTE root, prepared SDK sources and resolved
+package versions as build 1. Upload status is recorded in the release artifacts.
