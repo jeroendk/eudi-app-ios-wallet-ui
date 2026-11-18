@@ -1,3 +1,14 @@
+> Current source, 18 November 2026: synchronized with upstream main. The
+> metadata-cache lock is supplied by WalletKit PR #562; Keychain overwrites and
+> the Fastlane update fix are supplied by official storage 0.27.1 (PRs #76/#77).
+> Those local implementations are removed. The remaining WalletKit integration
+> preserves the optional issuer-cache setting and selects storage 0.27.1
+> and data-transfer 0.30.1.
+> Security 0.31.3 and WalletKit main include data-model 0.30 compatibility;
+> Xcode 27 / Swift 6.4 is used. Exact source pins and remaining GBO patches live
+> in gbo-wallet-patches/wallet-patches/upstream-20261118.json. This source update
+> has not been installed or uploaded. Earlier entries below are historical.
+
 > Current source, 12 November 2026: synchronized with upstream main. The
 > previous OpenID4VCI audience and credential-identifier patches are now supplied
 > by upstream (OpenID4VCI 0.55.7, WalletKit 0.61.1). Local trust-profile, metadata-
