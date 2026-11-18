@@ -102,10 +102,10 @@ final actor DocumentDetailsInteractorImpl: DocumentDetailsInteractor {
   func deleteDocument(with documentId: String, and type: DocumentTypeIdentifier) async -> DocumentDetailsDeletionPartialState {
 
     func shouldDeleteAllDocuments(type: DocumentTypeIdentifier) async -> Bool {
-      if configLogic.forcePidActivation && (type == .mDocPid || type == .sdJwtPid ) {
+      if configLogic.forcePidActivation && type.isPid {
 
         let documentPids = await walletController.fetchIssuedDocuments(
-          with: [DocumentTypeIdentifier.mDocPid, DocumentTypeIdentifier.sdJwtPid]
+          with: DocumentTypeIdentifier.pidTypes
         )
         let mainPid = await walletController.fetchMainPidDocument()
 

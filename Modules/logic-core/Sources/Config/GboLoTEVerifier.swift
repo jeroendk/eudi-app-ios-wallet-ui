@@ -1,6 +1,7 @@
 import Foundation
 import Security
 import CryptoKit
+import X509
 
 /// GBO demo profile, independently anchored. The JWT's x5c never supplies trust.
 final class GboLoTEVerifier: NSObject, @unchecked Sendable {
@@ -21,6 +22,15 @@ final class GboLoTEVerifier: NSObject, @unchecked Sendable {
       return cert
     }
     try check(SecCertificateCopyData(certificates[0]) as Data != root)
+    // Require an end-entity signing key, matching the Android LoTE profile.
+    let signer = try X509.Certificate(derEncoded: Array(SecCertificateCopyData(certificates[0]) as Data))
+    if let constraints = try signer.extensions.basicConstraints,
+       case .isCertificateAuthority = constraints {
+      throw Failure.invalidList
+    }
+    if let usage = try signer.extensions.keyUsage {
+      try check(usage.digitalSignature)
+    }
     var trust: SecTrust?
     try check(SecTrustCreateWithCertificates(certificates as CFArray, SecPolicyCreateBasicX509(), &trust) == errSecSuccess)
     guard let trust else { throw Failure.invalidList }

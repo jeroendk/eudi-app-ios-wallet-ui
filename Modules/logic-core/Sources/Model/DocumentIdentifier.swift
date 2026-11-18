@@ -20,6 +20,13 @@ public enum DocumentTypeIdentifier: RawRepresentable, Equatable, Sendable, Hasha
   case sdJwtPid
   case other(formatType: String)
 
+  public static let nlPid = Self.other(formatType: "urn:eudi:pid:nl:1")
+  public static let pidTypes: [Self] = [.mDocPid, .sdJwtPid, .nlPid]
+
+  public var isPid: Bool {
+    Self.pidTypes.contains { $0.rawValue == rawValue }
+  }
+
   public var rawValue: String {
     return switch self {
     case .mDocPid:

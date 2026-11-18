@@ -463,7 +463,7 @@ final actor WalletKitControllerImpl: WalletKitController {
   }
 
   func fetchMainPidDocument() -> (any DocClaimsDecodable)? {
-    return fetchIssuedDocuments(with: [DocumentTypeIdentifier.mDocPid, DocumentTypeIdentifier.sdJwtPid])
+    return fetchIssuedDocuments(with: DocumentTypeIdentifier.pidTypes)
       .sorted { $0.createdAt > $1.createdAt }.last
   }
 
@@ -716,7 +716,7 @@ final actor WalletKitControllerImpl: WalletKitController {
                     issuer: issuerName,
                     order: orderedVciConfig.order,
                     configId: credential.key.value,
-                    isPid: id == .mDocPid,
+                    isPid: id.isPid,
                     docTypeIdentifier: id
                   )
 
@@ -728,7 +728,7 @@ final actor WalletKitControllerImpl: WalletKitController {
                     issuer: issuerName,
                     order: orderedVciConfig.order,
                     configId: credential.key.value,
-                    isPid: id == .sdJwtPid,
+                    isPid: id.isPid,
                     docTypeIdentifier: id
                   )
 

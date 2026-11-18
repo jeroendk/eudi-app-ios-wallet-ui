@@ -58,7 +58,7 @@ final actor DocumentOfferInteractorImpl: DocumentOfferInteractor {
       let codeMaxLength = 6
 
       let offer = try await walletController.resolveOfferUrlDocTypes(offerUri: uri)
-      let hasPidStored = await !walletController.fetchIssuedDocuments(with: [.mDocPid, .sdJwtPid]).isEmpty
+      let hasPidStored = await !walletController.fetchIssuedDocuments(with: DocumentTypeIdentifier.pidTypes).isEmpty
 
       if let spec = offer.txCodeSpec,
          spec.inputMode == .text || !(codeMinLength...codeMaxLength).contains(spec.length ?? 0) {
@@ -74,7 +74,7 @@ final actor DocumentOfferInteractorImpl: DocumentOfferInteractor {
               }
             }
           )
-          return identifier == .mDocPid || identifier == .sdJwtPid
+          return identifier.isPid
         }
       ) != nil
 

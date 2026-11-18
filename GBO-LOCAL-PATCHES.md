@@ -241,3 +241,18 @@ The icon update is prepared as version `0.1.0`, build `2`; all eight app and
 extension build-number settings were incremented together. The release uses
 the same simulation endpoints, LoTE root, prepared SDK sources and resolved
 package versions as build 1. Upload status is recorded in the release artifacts.
+
+## Fork review follow-up (18 November 2026)
+
+Dutch PID UI classification and main-PID selection now include
+`urn:eudi:pid:nl:1`. The identifier retains its real vct; credential policy,
+batch size, trust rules and the PID activation setting are unchanged.
+The LoTE JWT signer must be an end-entity certificate. When KeyUsage is
+present, digitalSignature is required, matching Android. Missing KeyUsage or
+BasicConstraints remains accepted. Paired artificial signer fixtures exercise
+these cases; no fixture private keys are retained.
+
+The focused XCTest suite can be run using `scripts/test-ios-gbo-profile.py`
+in `jeroendk/gbo-wallet-patches`. It compiles the actual app source and tests
+in a small macOS package. A full iOS simulator build is a separate check;
+these checks are not a new device acceptance test.

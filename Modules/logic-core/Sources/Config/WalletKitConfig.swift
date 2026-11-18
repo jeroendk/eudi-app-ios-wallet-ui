@@ -238,6 +238,7 @@ struct WalletKitConfigImpl: WalletKitConfig {
       .Government: [
         .mDocPid,
         .sdJwtPid,
+        .nlPid,
         .other(formatType: "org.iso.18013.5.1.mDL"),
         .other(formatType: "eu.europa.ec.eudi.pseudonym.age_over_18.1"),
         .other(formatType: "urn:eu.europa.ec.eudi:pseudonym_age_over_18:1"),

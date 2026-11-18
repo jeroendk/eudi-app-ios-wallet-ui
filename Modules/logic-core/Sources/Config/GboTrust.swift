@@ -4,7 +4,7 @@ import EudiEtsi1196x2
 /// Build-supplied GBO simulation endpoints and independent public scheme root.
 /// There are no credential, reader or registrar pins and no static fallback.
 enum GboTrust {
-  static let nlPid = "urn:eudi:pid:nl:1"
+  static let nlPid = DocumentTypeIdentifier.nlPid.rawValue
   static func setting(_ name: String) -> String { Bundle.main.object(forInfoDictionaryKey: name) as? String ?? "" }
   static var issuerBase: String { setting("GBO_ISSUER_BASE_URL").trimmingCharacters(in: CharacterSet(charactersIn: "/")) }
   static var issuerUrls: [String] { ["rvig", "belastingdienst", "demo-unsecured", "test-pid"].map { "\(issuerBase)/\($0)/eudi" } }

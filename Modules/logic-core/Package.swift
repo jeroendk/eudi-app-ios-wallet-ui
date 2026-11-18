@@ -20,6 +20,7 @@ let package = Package(
   dependencies: [
     .package(path: gboSecurity),
     .package(path: gboWalletKit),
+    .package(url: "https://github.com/apple/swift-certificates.git", from: "1.21.0"),
     .package(
       name: "logic-resources",
       path: "./logic-resources"
@@ -43,6 +44,7 @@ let package = Package(
       name: "logic-core",
       dependencies: [
         .product(name: "MdocSecurity18013", package: "eudi-lib-ios-iso18013-security"),
+        .product(name: "X509", package: "swift-certificates"),
         "logic-resources",
         "logic-business",
         "logic-storage",
@@ -63,7 +65,8 @@ let package = Package(
         "logic-api",
         "logic-test"
       ],
-      path: "./Tests"
+      path: "./Tests",
+      resources: [.copy("Fixtures/GboLoTE")]
     )
   ]
 )
