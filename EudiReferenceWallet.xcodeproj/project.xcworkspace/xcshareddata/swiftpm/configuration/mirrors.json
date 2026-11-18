@@ -1,0 +1,21 @@
+{
+  "object": [
+    {
+      "original": "https://github.com/eu-digital-identity-wallet/eudi-lib-ios-iso18013-data-transfer",
+      "mirror": "https://github.com/jeroendk/eudi-lib-ios-iso18013-data-transfer.git"
+    },
+    {
+      "original": "https://github.com/eu-digital-identity-wallet/eudi-lib-ios-iso18013-data-transfer.git",
+      "mirror": "https://github.com/jeroendk/eudi-lib-ios-iso18013-data-transfer.git"
+    },
+    {
+      "original": "https://github.com/eu-digital-identity-wallet/eudi-lib-ios-iso18013-security",
+      "mirror": "https://github.com/jeroendk/eudi-lib-ios-iso18013-security.git"
+    },
+    {
+      "original": "https://github.com/eu-digital-identity-wallet/eudi-lib-ios-iso18013-security.git",
+      "mirror": "https://github.com/jeroendk/eudi-lib-ios-iso18013-security.git"
+    }
+  ],
+  "version": 1
+}

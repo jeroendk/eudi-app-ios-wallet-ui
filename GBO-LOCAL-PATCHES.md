@@ -1,3 +1,13 @@
+> Current build route (18 November 2026): the app resolves public GBO forks
+> at fixed versions: WalletKit 0.62.2001, transfer 0.30.1001 and security
+> 0.31.3001. The security package pins the public KMP XCFramework checksum.
+> Shared SwiftPM mirrors route indirect upstream transport/security requests
+> to the same forks. The build helper explicitly loads this app-local config;
+> no local SDK environment, source patch or user-global override is required.
+> Version/source mapping and build instructions are maintained in
+> `jeroendk/gbo-wallet-patches/wallet-forks.json` and its README.
+> Historical notes below describe previous builds and migration stages.
+
 > Current source, 18 November 2026: synchronized with upstream main. The
 > metadata-cache lock is supplied by WalletKit PR #562; Keychain overwrites and
 > the Fastlane update fix are supplied by official storage 0.27.1 (PRs #76/#77).
